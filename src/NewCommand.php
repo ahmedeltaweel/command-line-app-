@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: TAU
- * Date: 11/26/15
- * Time: 6:19 PM
- */
 
 namespace Acme;
 
@@ -20,6 +14,9 @@ class NewCommand extends Command
 {
 
 
+	/**
+	 * @var ClientInterface
+	 */
 	private $client;
 
 	/**
@@ -34,7 +31,7 @@ class NewCommand extends Command
 	}
 
 	/**
-	 *
+	 * configuring command
 	 */
 	public function configure()
 	{
@@ -44,6 +41,7 @@ class NewCommand extends Command
 	}
 
 	/**
+	 * executing the command
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @return int|null|void
@@ -51,9 +49,11 @@ class NewCommand extends Command
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
 		$directory = getcwd() . '/' . $input->getArgument('name');
+
 		$this->assertApplicationFolderDoesNotExist($directory, $output);
 
 		$output->writeln("<comment>Downloading ....</comment>");
+
 		$this->download($zipFile = $this->makeFileName())
 			->extract($zipFile, $directory, $output)
 			->cleanUp($zipFile, $output);
@@ -62,6 +62,7 @@ class NewCommand extends Command
 	}
 
 	/**
+	 * check if folder is exists
 	 * @param $directory
 	 * @param OutputInterface $output
 	 */
@@ -74,12 +75,14 @@ class NewCommand extends Command
 	}
 
 	/**
+	 * download laravel
 	 * @param $zipFile
 	 * @return $this
 	 */
 	private function download($zipFile)
 	{
-		$response = $this->client->request('GET' , 'http://cabinet.laravel.com/latest.zip')->getBody();
+		$response = $this->client->request('GET', 'http://cabinet.laravel.com/latest.zip')->getBody();
+
 		file_put_contents($zipFile, $response);
 
 		return $this;
@@ -87,6 +90,7 @@ class NewCommand extends Command
 	}
 
 	/**
+	 * rename the downloaded zip file
 	 * create file name for
 	 * @return string
 	 */
@@ -96,6 +100,7 @@ class NewCommand extends Command
 	}
 
 	/**
+	 * extracting the downloaded zip file
 	 * @param $zipFile
 	 * @param $directory
 	 * @param OutputInterface $output
@@ -109,15 +114,23 @@ class NewCommand extends Command
 		$archive->open($zipFile);
 		$archive->extractTo($directory);
 		$archive->close();
+
 		return $this;
 	}
 
+	/**
+	 * removing the zip file
+	 * @param $zipFile
+	 * @param OutputInterface $output
+	 * @return $this
+	 */
 	private function cleanUp($zipFile, OutputInterface $output)
 	{
 		$output->writeln("<comment>CLeaning Up ....</comment>");
 
 		@chmod($zipFile, 0777);
 		@unlink($zipFile);
+
 		return $this;
 	}
 

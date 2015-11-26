@@ -9,7 +9,7 @@ use Symfony\Component\Console\Application;
 
 require "vendor/autoload.php";
 
-$app = new Application('demo app', '1.0');
+$app = new Application('laracast.com training command line app', '1.0');
 
 $app->add(new Render);
 $app->add(new sayHelloCommand);

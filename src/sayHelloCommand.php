@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: TAU
- * Date: 11/26/15
- * Time: 5:59 PM
- */
 
 namespace Acme;
 
@@ -19,7 +13,7 @@ class sayHelloCommand extends Command
 {
 
     /**
-     *
+     * configuring the command
      */
     public function configure()
     {
@@ -30,7 +24,7 @@ class sayHelloCommand extends Command
     }
 
     /**
-     *
+     * executing the command on dummy data
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
