@@ -1,0 +1,18 @@
+#! /usr/bin/env php
+
+<?php
+
+use Acme\NewCommand;
+use Acme\Render;
+use Acme\sayHelloCommand;
+use Symfony\Component\Console\Application;
+
+require "vendor/autoload.php";
+
+$app = new Application('demo app', '1.0');
+
+$app->add(new Render);
+$app->add(new sayHelloCommand);
+$app->add(new NewCommand(new GuzzleHttp\Client()));
+
+$app->run();
